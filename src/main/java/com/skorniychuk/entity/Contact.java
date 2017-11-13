@@ -30,6 +30,9 @@ public class Contact implements Serializable {
     @Column(name = "VERSION")
     private int version;
 
+    public Contact() {
+    }
+
     public Long getId() {
         return id;
     }
