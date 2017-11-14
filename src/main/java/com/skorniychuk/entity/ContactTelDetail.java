@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import java.io.Serializable;
@@ -23,6 +25,9 @@ public class ContactTelDetail implements Serializable {
     @Version
     @Column(name = "VERSION")
     private int version;
+    @ManyToOne
+    @JoinColumn(name = "CONTACT_ID")
+    private Contact contact;
 
     public ContactTelDetail() {
     }
@@ -62,5 +67,13 @@ public class ContactTelDetail implements Serializable {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 }

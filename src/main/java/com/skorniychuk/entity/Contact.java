@@ -1,16 +1,20 @@
 package com.skorniychuk.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "contact")
@@ -29,6 +33,8 @@ public class Contact implements Serializable {
     @Version
     @Column(name = "VERSION")
     private int version;
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ContactTelDetail> contactTelDetails = new HashSet<>();
 
     public Contact() {
     }
@@ -71,5 +77,22 @@ public class Contact implements Serializable {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+
+    public Set<ContactTelDetail> getContactTelDetails() {
+        return contactTelDetails;
+    }
+
+    public void setContactTelDetails(Set<ContactTelDetail> contactTelDetails) {
+        this.contactTelDetails = contactTelDetails;
+    }
+
+    public void addContactTelDetail(ContactTelDetail contactTelDetail) {
+        contactTelDetail.setContact(this);
+        getContactTelDetails().add(contactTelDetail);
+    }
+
+    public void removeContactTelDetail(ContactTelDetail contactTelDetail) {
+        getContactTelDetails().remove(contactTelDetail);
     }
 }
