@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -35,6 +38,11 @@ public class Contact implements Serializable {
     private int version;
     @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ContactTelDetail> contactTelDetails = new HashSet<>();
+    @ManyToMany
+    @JoinTable(name = "contact_hobby_detail",
+            joinColumns = @JoinColumn(name = "CONTACT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "HOBBY_ID"))
+    private Set<Hobby> hobbies = new HashSet<Hobby>();
 
     public Contact() {
     }
@@ -94,5 +102,13 @@ public class Contact implements Serializable {
 
     public void removeContactTelDetail(ContactTelDetail contactTelDetail) {
         getContactTelDetails().remove(contactTelDetail);
+    }
+
+    public Set<Hobby> getHobbies() {
+        return hobbies;
+    }
+
+    public void setHobbies(Set<Hobby> hobbies) {
+        this.hobbies = hobbies;
     }
 }
